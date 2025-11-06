@@ -1,0 +1,134 @@
+################################################################################
+# GENERAL CONFIGURATION
+################################################################################
+
+# Sample Configuration
+# List of sample names (without _R1/_R2 suffix or extension) in the raw_fastq folder, example: ["SRR30473391", "SRR30473392"]
+sample_name: []
+
+# Analysis Type
+# Options: "full" - complete analysis with QC trimming and classification
+#          "raw_qc" - only perform quality control on raw reads
+analysis_type: "full"
+
+# Sequencing Technology
+# is_paired: true for paired-end Illumina reads, false for single-end or ONT reads
+# long_reads: true for Oxford Nanopore (ONT) reads, false for Illumina short reads
+is_paired: false
+long_reads: true
+
+# Taxonomic Level
+# Options: D (Domain), P (Phylum), C (Class), O (Order), F (Family), G (Genus), S (Species)
+# Used for OTU table generation and downstream analysis
+organism_taxonomic_level: "G"
+
+
+################################################################################
+# TOOL SELECTION - Enable/Disable Classification Tools
+################################################################################
+
+use_kraken: true        # Kraken2: fast k-mer based metagenomic classifier
+use_centrifuger: true   # Centrifuger: compressed FM-index classifier (replacement for Centrifuge)
+use_dada2: false        # DADA2: Amplicon sequence variant (ASV) inference (requires is_paired=true for optimal performance)
+use_emu: true           # EMU: Expectation-Maximization algorithm for relative abundance estimation in 16S targeted long reads sequencing
+
+
+################################################################################
+# PREPROCESSING - Trimmomatic (Illumina short reads)
+################################################################################
+
+# Adapter Trimming
+# Enable adapter removal before quality trimming. Requires adapter file in adapters/ folder
+trim_adapters: false
+
+# Quality Trimming
+# Perform base quality trimming. If trim_adapters=true, this MUST also be true
+trimmomatic_qc_trim_reads: false
+
+# Adapter Selection
+# Options: "NexteraPE-PE", "TruSeq3-PE", "TruSeq3-SE", "TruSeq2-SE"
+# Or provide absolute path to custom adapter FASTA file
+trimmomatic_adapters: "NexteraPE-PE"
+
+# Quality Parameters
+trimmomatic_leading: 3          # Remove leading low quality bases (below quality 3)
+trimmomatic_trailing: 3         # Remove trailing low quality bases (below quality 3)
+trimmomatic_slidingwindow: "4:15"  # Sliding window: average quality over 4 bases >= 15
+trimmomatic_minlen: 36          # Drop reads shorter than 36 bp after trimming
+
+
+################################################################################
+# PREPROCESSING - NanoFilt (Oxford Nanopore long reads)
+################################################################################
+
+nanofilt_length: 50        # Minimum read length to keep (default=0, no filtering)
+nanofilt_quality: 10       # Minimum average read quality score (Phred scale, default=0)
+nanofilt_maxlength: 99999999  # Maximum read length to keep (default=no limit)
+nanofilt_mingc: 0          # Minimum GC content (0-1 scale, default=0)
+nanofilt_maxgc: 1          # Maximum GC content (0-1 scale, default=1)
+nanofilt_headcrop: 0       # Trim N bases from start of read (default=0)
+nanofilt_tailcrop: 0       # Trim N bases from end of read (default=0)
+
+
+################################################################################
+# KRAKEN2 CLASSIFICATION
+################################################################################
+
+# Database Path
+# Path to the Kraken2 database directory containing seqid2taxid.map
+kraken2_db: "path/to/database"
+
+# Classification Parameters
+kraken2_conf_interval: 0      # Confidence score threshold (0-1, default=0.2, 0=report all)
+kraken2_min_base_qual: 0      # Minimum base quality for k-mer inclusion (default=0)
+
+# Bracken Parameters (for abundance estimation)
+kraken2_rlen: 100   # Expected read length for Bracken (should match your sequencing)
+kraken2_kmer: 35    # K-mer length used in Kraken2 database build (default=35)
+
+
+################################################################################
+# CENTRIFUGER CLASSIFICATION
+################################################################################
+
+# Database Path
+# Path to Centrifuger index prefix (without .1.cf, .2.cf suffixes)
+# Example: if you have "index.1.cf", "index.2.cf", etc., use "path/index" as the path
+centrifuger_db_path: "path/to/database"
+
+# Classification Parameters
+centrifuger_min_hitlen: 18  # Minimum alignment length for a valid hit (default=22)
+centrifuger_max_hits: 3     # Maximum number of distinct alignments to report per read (default=5)
+
+
+################################################################################
+# DADA2 - Amplicon Sequence Variant (ASV) Inference
+################################################################################
+
+# Database Paths
+# Training set for taxonomic assignment (SILVA, GreenGenes, RDP, etc.)
+dada2_train_set: "path/to/database"
+
+# Species-level assignment database
+dada2_sp_assign: "path/to/database"
+
+# Quality Filtering Parameters
+dada2_for_trunc: 280  # Forward read truncation length (trim to this length, default=290)
+dada2_rev_trunc: 260  # Reverse read truncation length (trim to this length, default=260)
+
+# Error Model Parameters
+dada2_for_error: 2  # Maximum expected errors in forward reads (default=2)
+dada2_rev_error: 2  # Maximum expected errors in reverse reads (default=2)
+
+# Performance
+# Set to false on Windows; can be true on Linux/macOS for parallel processing
+dada2_multithread: false
+
+
+################################################################################
+# EMU - Expectation-Maximization Taxonomic Profiling
+################################################################################
+
+# Database Path
+# Path to EMU database directory containing taxonomy.tsv and species_taxid.fasta
+emu_db_path: "path/to/database"
