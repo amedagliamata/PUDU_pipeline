@@ -1,8 +1,10 @@
 # PUDU Pipeline
 
-**P**owerful **U**niversal **D**NA seq**U**encing Pipeline
+**P**ipeline for **U**niversal **D**iversity **U**nveiling Pipeline
 
 A comprehensive Snakemake-based bioinformatics pipeline for metagenomic and amplicon sequencing analysis, supporting both Illumina short reads and long reads.
+
+Its name refers to the pudú (*Pudu puda*), the smallest deer in the world, native to the temperate forests of southern Chile. Just as the animal occupies a small ecological footprint while maintaining high adaptability, PUDU is intentionally designed as a compact and modular workflow, providing  lightweight but effective framework for microbiome and metagenomic analysis
 
 ## Overview
 
