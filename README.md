@@ -1,6 +1,6 @@
 # PUDU Pipeline
 
-**P**ipeline for **U**niversal **D**iversity **U**nveiling Pipeline
+**P**ipeline for **U**niversal **D**iversity **U**nveiling
 
 A comprehensive Snakemake-based bioinformatics pipeline for metagenomic and amplicon sequencing analysis, supporting both Illumina short reads and long reads.
 
