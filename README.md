@@ -314,4 +314,4 @@ For questions or support, please open an issue on GitHub or contact the reposito
 
 ## Acknowledgments
 
-This pipeline integrates tools developed by the scientific community. We thank all developers and maintainers of the integrated software.
+This pipeline integrates tools developed by the scientific community. We thank all developers and maintainers of the integrated software. The authors also want to thank Agencia Nacional de Investigacion y Desarrollo (ANID)-Fondecyt Iniciación 11230475 and Instituto Antarctico Chileno (INACH) for funding and data
